@@ -10,7 +10,7 @@ Lokal multiplayer (2 eller 3 spillere).
 * Spiller 3 (B, M)
 
 
-TODO:
+## TODO:
 * Powerups (øke/senke fart, endre linjestørrelse osv.)
 * Nedtelling mellom rundene
 * Lydeffekter
