@@ -1,5 +1,7 @@
 # CurveGame
 
+Spill [CurveGame](http://olekristian.com/curvegame/)
+
 Spill basert på [Curve Fever](http://curvefever.com/).
 Ikke treff linjene eller kantene av banen. Prøv å overleve lengst.
 
