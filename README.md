@@ -1,7 +1,6 @@
 # CurveGame
 
 Spill basert på [Curve Fever](http://curvefever.com/).
-
 Ikke treff linjene eller kantene av banen. Om å gjøre å overleve lengst.
 
 Lokal multiplayer (2 eller 3 spillere).
