@@ -37,7 +37,7 @@ $(document).ready(function() {
   var win = false;
 
   var turnStrength = 2;
-  var moveSpeed = 1.5;
+  var moveSpeed = 1;
 
   var dotRadius = 5;
   var sideBarWidth = 200;
@@ -377,8 +377,9 @@ $(document).ready(function() {
         }
       }
     }
+    
     checkReset();
-    setTimeout(update, 10);
+    setTimeout(update, 5);
   }
 
   /**************
