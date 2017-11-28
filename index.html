@@ -3,28 +3,23 @@
 <head>
 	<title>CurveGame</title>
 	<meta charset="UTF-8">
-	<!-- Styles -->
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<!-- Scripts -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="Player.js"></script>
 	<script type="text/javascript" src="script.js"></script>
 </head>
 <body>
-
-	
-	<div class="sideBar">
+	<div class="sidebar">
 		<div class="logo">Curve<span>Game</span></div>
-		<div class="alpha">Alpha</div>
+		<div class="version">Alpha 2.0</div>
 		<div class="scoreboard"></div>
 	</div>
-	<canvas id="theCanvas"></canvas>
+	<canvas id="canvas"></canvas>
 	<div class="dot"></div>
 	<div class="countdown"></div>
-	<div class="startScreen">
-		<p>Velg antall spillere:</p>
-		<button class="startButton" id="spiller2">2</button>
-		<button class="startButton" id="spiller3">3</button>
+	<div class="start-screen">
+		<p>How many players?</p>
+		<button class="start-button" data-players="2">2</button>
+		<button class="start-button" data-players="3">3</button>
 	</div>
-
 </body>
 </html>

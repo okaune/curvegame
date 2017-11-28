@@ -1,4 +1,4 @@
-* { 
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -16,22 +16,20 @@ html, body {
   color: red;
   text-align: center;
   line-height: 40px;
-  margin-bottom: 20px;
+  //margin-bottom: 20px;
 }
 
 .logo span {
   color: white;
 }
 
-.alpha {
+.version {
   color: red;
-  position: absolute;
-  left: 140px;
-  top: 40px;
-  transform: rotate(-10deg);
+  text-align: right;
+  margin: -10px 10px 20px;
 }
 
-.sideBar {
+.sidebar {
   height: 100vh;
   width: 200px;
   float: left;
@@ -41,7 +39,7 @@ html, body {
   padding: 10px;
 }
 
-#theCanvas {
+#canvas {
   float: left;
   display: block;
   background: black;
@@ -55,7 +53,7 @@ html, body {
   border-radius: 50%;
 }
 
-.winMessage, .countdown {
+.win-message, .countdown {
   position: absolute;;
   left: calc(50% + 100px);
   top: 50%;
@@ -71,18 +69,18 @@ html, body {
   display: none;
 }
 
-.playTo {
+.play-to {
   display: inline-block;
   margin-bottom: 10px;
 }
 
-.pointsTable_points {
+.points-table_points {
   color: white;
   display: inline-block;
   float: right;
 }
 
-.startScreen {
+.start-screen {
   position: absolute;
   left: calc(50% + 100px);
   top: 50%;
@@ -94,7 +92,7 @@ html, body {
   border: 3px solid white;
 }
 
-.startButton {
+.start-button {
   border: 3px solid white;
   color: white;
   background: black;
@@ -105,8 +103,7 @@ html, body {
   transition: all .5s;
 }
 
-.startButton:hover {
+.start-button:hover {
   color: black;
   background: white;
 }
-
