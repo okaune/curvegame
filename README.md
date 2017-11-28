@@ -1,19 +1,22 @@
 # CurveGame
 
-Spill [CurveGame](http://olekristian.com/curvegame/)
+Try [CurveGame Aplha 2.0](http://olekristian.com/projects/curvegame/)
 
-Spill basert på [Curve Fever](http://curvefever.com/).
-Ikke treff linjene eller kantene av banen. Prøv å overleve lengst.
+Based on and inspired by [Curve Fever](http://curvefever.io/).
 
-Lokal multiplayer (2 eller 3 spillere).
-* Spiller 1 (Venstre piltast, høyre piltast)
-* Spiller 2 (A, D)
-* Spiller 3 (B, M)
+Controls for local multiplayer
+* Player 1: ←, →
+* Player 2: A, D
+* Player 3: B, M
 
-
-## TODO:
-* Powerups (øke/senke fart, endre linjestørrelse osv.)
-* Nedtelling mellom rundene
-* Lydeffekter
+## Goals for further development:
+* Improve collisions and drawing
+* Reimplement gaps
+* Reimplement win condition
+* Powerups
+  * Speed change
+  * Line thickness
+* Countdowns and direction indicators
 * Online multiplayer
-* Brukerregistrering og innlogging
+* Sounds
+* User profiles
