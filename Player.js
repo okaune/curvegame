@@ -1,5 +1,5 @@
-var colors = ['#ff0000', '#00ff00', '#ffff00', '#ff00ff', '#00ffff', '#0000ff' ];
-var controls = [
+const COLORS = ['#ff0000', '#00ff00', '#ffff00', '#ff00ff', '#00ffff', '#0000ff' ];
+const CONTROLS = [
   {
     left: 37, // Left Arrow
     right: 39 // Right Arrow
@@ -15,19 +15,21 @@ var controls = [
 class Player {
   constructor(id) {
     this.id = id;
-    this.x = Math.floor(Math.random() * canvas.width);
-    this.y = Math.floor(Math.random() * canvas.height);
+    this.x = Math.floor(Math.random() * game.canvas.width);
+    this.y = Math.floor(Math.random() * game.canvas.height);
     this.oldX = this.x;
     this.oldY = this.y;
     this.state = {left: false, right: false};
-    this.dir = Math.floor(Math.random() * 360);
+    this.dir = Math.random() * 2 * Math.PI;
     this.speed = 2;
-    this.turnStrength = 3;
-    this.color = colors[id];
-    this.controls = controls[id];
+    this.turnStrength = 0.05;
+    this.color = COLORS[id];
+    this.controls = CONTROLS[id];
     this.dead = false;
     this.points = 0;
     this.radius = 5;
+    this.mode = "gap";
+    this.gap = 0;
   }
 
   registerControls() {
@@ -53,63 +55,56 @@ class Player {
   }
 
   draw() {
-    ctx.lineWidth = this.radius;
-    ctx.strokeStyle = this.color;
-    ctx.beginPath();
-    ctx.moveTo(this.oldX, this.oldY);
-    ctx.lineTo(this.x, this.y);
-    ctx.stroke();
-    //ctx.closePath();
-    this.oldX = this.x;
-    this.oldY = this.y;
-    //lineGap(player);
-
-
+    this.drawLine();
+    this.setMode();
   }
 
-  lineGap(entity) {
-    /*
-    if (entity.nextGap > 0) {
-      ctx.strokeStyle = entity.color;
-      entity.nextGap--;
-    } else {
-      if (entity.gapSize > 0) {
-        ctx.strokeStyle = '#000000';
-        entity.gapSize--;
-      } else {
-        ctx.strokeStyle = entity.color;
-        entity.gapSize = Math.floor(Math.random() * 5) + 20; // From 20 to 25
-        entity.nextGap = Math.floor(Math.random() * 300) + 50; // From 50 to 350
-      }
+  drawLine() {
+    game.ctx.lineWidth = this.radius;
+    game.ctx.strokeStyle = (this.mode === "line") ? this.color : this.color + "00";
+    game.ctx.beginPath();
+    game.ctx.moveTo(this.oldX, this.oldY);
+    game.ctx.lineTo(this.x, this.y);
+    game.ctx.stroke();
+    this.oldX = this.x;
+    this.oldY = this.y;
+  }
+
+  setMode() {
+    if (this.gap > 0) this.gap--;
+    else {
+      this.mode = (this.mode === "line") ? "gap" : "line";
+      this.gap = (this.mode === "line") ? Math.floor(Math.random() * 200) + 50 : Math.floor(Math.random() * 10) + 10;
     }
-    */
   }
 
   collision() {
-    const pixels = ctx.getImageData(
-      ~~(this.x - this.radius),
-      ~~(this.y - this.radius),
-      this.radius * 2,
-      this.radius * 2
-    ).data;
-
-    for(var i = 0; i < pixels.length; i += 4) {
-      if (pixels[i+3] != 0) {
-        const red = (pixels[i] < 255) ? 0 : 255;
-        const green = (pixels[i+1] < 255) ? 0 : 255;
-        const blue = (pixels[i+2] < 255) ? 0 : 255;
-        const hex = "#" + ("000000" + rgbToHex(red, green, blue)).slice(-6);
-        if (hex != this.color || this.x < 0 + this.radius  || this.x > canvas.width - this.radius || this.y < 0 + this.radius || this.y > canvas.height - this.radius) {
+    if(
+      this.x - this.radius < 0 ||
+      this.x + this.radius > game.canvas.width ||
+      this.y - this.radius < 0 ||
+      this.y + this.radius > game.canvas.height
+    ) {
+      this.dead = true;
+      updatePoints();
+      updateScoreboard();
+    }
+    const PI = Math.PI;
+    for(let a = -PI/2; a <= PI/2; a += PI/4) {
+      const alpha = game.ctx.getImageData(
+        ~~(this.x + this.radius*Math.cos(this.dir+a)),
+        ~~(this.y + this.radius*Math.sin(this.dir+a)),
+        1,
+        1
+      ).data[3];
+      if (alpha !== 0) {
           this.dead = true;
           updatePoints();
           updateScoreboard();
           break;
-        }
       }
     }
-
   }
-
 }
 
 function rgbToHex(r, g, b) {
