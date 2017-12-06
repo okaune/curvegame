@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   game.canvas.width = window.innerWidth - 200 - 6;
   game.canvas.height = window.innerHeight - 6;
   game.ctx = game.canvas.getContext('2d');
+  game.ctx.imageSmoothingEnabled = false;
   [...document.querySelectorAll('.start-button')].map(btn => btn.onclick = setup);
 });
 
