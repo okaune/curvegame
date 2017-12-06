@@ -10,12 +10,14 @@ Controls for local multiplayer
 * Player 3: B, M
 
 ## Goals for further development:
-* Improve collisions and drawing
-* Reimplement gaps
-* Reimplement win condition
+* ~~Improve collisions and drawing~~
+* ~~Reimplement gaps~~
+* ~~Reimplement win condition~~
 * Powerups
   * Speed change
   * Line thickness
+  * Inverted controls
+  * Clear all lines
 * Countdowns and direction indicators
 * Online multiplayer
 * Sounds
