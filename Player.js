@@ -106,8 +106,8 @@ class Player {
       this.y + this.radius > game.canvas.height
     ) {
       this.dead = true;
+      game.DEAD++;
       updatePoints();
-      updateScoreboard();
     }
     const PI = Math.PI;
     for(let a = -PI/2; a <= PI/2; a += PI/4) {
@@ -119,8 +119,8 @@ class Player {
       ).data[3];
       if (alpha) {
           this.dead = true;
+          game.DEAD++;
           updatePoints();
-          updateScoreboard();
           break;
       }
     }
