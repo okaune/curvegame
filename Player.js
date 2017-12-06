@@ -82,10 +82,10 @@ class Player {
     game.ctx.strokeStyle = (this.mode === MODE.LINE) ? this.color : this.color + '00';
     game.ctx.beginPath();
     game.ctx.moveTo(this.oldX, this.oldY);
-    game.ctx.lineTo(this.x, this.y);
+    game.ctx.bezierCurveTo(this.x, this.y, this.x, this.y, this.x, this.y);
     game.ctx.stroke();
-    this.oldX = this.x;
-    this.oldY = this.y;
+    this.oldX += (this.x - this.oldX)*.7;
+    this.oldY += (this.y - this.oldY)*.7;
   }
 
   setMode() {
