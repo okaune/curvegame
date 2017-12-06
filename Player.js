@@ -11,6 +11,10 @@ const CONTROLS = [
     right: 77 // M
   }
 ];
+const MODE = {
+  LINE: "line",
+  GAP: "gap"
+}
 
 class Player {
   constructor(id) {
@@ -28,13 +32,20 @@ class Player {
     this.dead = false;
     this.points = 0;
     this.radius = 5;
-    this.mode = "gap";
+    this.mode = MODE.GAP;
     this.gap = 0;
   }
 
   registerControls() {
     window.addEventListener('keydown', this.onKeyChange.bind(this, true), true);
     window.addEventListener('keyup', this.onKeyChange.bind(this, false), true);
+  }
+
+  createDot() {
+    const e = document.createElement('div');
+    e.className = `dot dot_${this.id}`;
+    e.style.background = this.color;
+    document.body.appendChild(e);
   }
 
   onKeyChange(bool, e) {
@@ -52,6 +63,13 @@ class Player {
   move() {
     if (this.state.left) this.dir -= this.turnStrength;
     if (this.state.right) this.dir += this.turnStrength;
+    const moveX = Math.cos(this.dir) * this.speed;
+    const moveY = Math.sin(this.dir) * this.speed;
+    this.x += moveX;
+    this.y += moveY;
+    const dot = document.querySelector(`.dot_${this.id}`);
+    dot.style.left = `${this.x - this.radius + 200 + 3}px`;
+    dot.style.top = `${this.y - this.radius + 3}px`;
   }
 
   draw() {
@@ -61,7 +79,7 @@ class Player {
 
   drawLine() {
     game.ctx.lineWidth = this.radius;
-    game.ctx.strokeStyle = (this.mode === "line") ? this.color : this.color + "00";
+    game.ctx.strokeStyle = (this.mode === MODE.LINE) ? this.color : this.color + "00";
     game.ctx.beginPath();
     game.ctx.moveTo(this.oldX, this.oldY);
     game.ctx.lineTo(this.x, this.y);
@@ -73,8 +91,10 @@ class Player {
   setMode() {
     if (this.gap > 0) this.gap--;
     else {
-      this.mode = (this.mode === "line") ? "gap" : "line";
-      this.gap = (this.mode === "line") ? Math.floor(Math.random() * 200) + 50 : Math.floor(Math.random() * 10) + 10;
+      this.mode = (this.mode === MODE.LINE) ? MODE.GAP : MODE.LINE;
+      this.gap = (this.mode === MODE.LINE) ?
+                    ~~(Math.random() * 300) + 20 :
+                    ~~(Math.random() * 10) + 10;
     }
   }
 
@@ -92,12 +112,12 @@ class Player {
     const PI = Math.PI;
     for(let a = -PI/2; a <= PI/2; a += PI/4) {
       const alpha = game.ctx.getImageData(
-        ~~(this.x + this.radius*Math.cos(this.dir+a)),
-        ~~(this.y + this.radius*Math.sin(this.dir+a)),
+        ~~(this.x + this.radius * Math.cos(this.dir + a)),
+        ~~(this.y + this.radius * Math.sin(this.dir + a)),
         1,
         1
       ).data[3];
-      if (alpha !== 0) {
+      if (alpha) {
           this.dead = true;
           updatePoints();
           updateScoreboard();
@@ -105,11 +125,4 @@ class Player {
       }
     }
   }
-}
-
-function rgbToHex(r, g, b) {
-  if (r > 255 || g > 255 || b > 255) {
-    throw "Invalid color component";
-  }
-  return ((r << 16) | (g << 8) | b).toString(16);
 }

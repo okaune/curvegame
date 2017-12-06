@@ -15,52 +15,32 @@ document.addEventListener("DOMContentLoaded", function(event) {
   game.canvas.width = window.innerWidth - 200 - 6;
   game.canvas.height = window.innerHeight - 6;
   game.ctx = game.canvas.getContext("2d");
-  [...document.querySelectorAll('.start-button')].map(btn => btn.onclick = init);
+  [...document.querySelectorAll('.start-button')].map(btn => btn.onclick = setup);
 });
 
 function createPlayers(num) {
   game.POINTS = (num - 1) * 10;
   for (let i = 0; i < num; i++) {
     let player = new Player(i);
+    player.createDot();
     game.players.push(player);
-    makeDot(player);
   }
 }
 
-function makeDot(player) {
-  const e = document.createElement('div');
-  e.className = `dot dot_${player.id}`;
-  e.style.background = player.color;
-  document.body.appendChild(e);
-}
-
-function moveDot(player) {
-  const xDeg = Math.cos(player.dir) * player.speed;
-  const yDeg = Math.sin(player.dir) * player.speed;
-  player.x += xDeg;
-  player.y += yDeg;
-  const dot = document.querySelector(`.dot_${player.id}`);
-  dot.style.left = `${player.x - player.radius + 200 + 3}px`;
-  dot.style.top = `${player.y - player.radius + 3}px`;
-}
-
-// FIXME
-/*
 function resetGame() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  game.ctx.clearRect(0, 0, canvas.width, canvas.height);
   checkWin();
-  if (!win) {
-    //countdown();
-    for (let player of players) {
+  if (!game.win) {
+    for (let player of game.players) {
       var tempColor = player.color;
-      player.color = '#000000';
-      var newX = Math.floor(Math.random() * canvas.width);
-      var newY = Math.floor(Math.random() * canvas.height);
-      player.xPrev = newX;
-      player.yPrev = newY;
-      player.xPos = newX;
-      player.yPos = newY;
-      player.degrees = Math.floor(Math.random() * 360);
+      player.color = '#00000000';
+      const x = Math.floor(Math.random() * canvas.width);
+      const y = Math.floor(Math.random() * canvas.height);
+      player.oldX = x;
+      player.oldY = y;
+      player.x = x;
+      player.y = y;
+      player.dir = Math.random() * 2 * Math.PI;
       player.color = tempColor;
       player.dead = false;
     }
@@ -69,43 +49,41 @@ function resetGame() {
 }
 
 function checkReset() {
-  if (PLAYERS - 1 === DEAD) {
-    if (finalTime <= 0) {
+  if (game.players.length - 2 === game.DEAD) {
+    countdown();
+    if (game.finalTime <= 0) {
       resetGame();
-      GAME_TICK = 0;
-      finalTime = 300;
+      game.finalTime = 300;
     }
-    finalTime--;
-  } else if (PLAYERS === DEAD) {
+    game.finalTime--;
+  } else if (game.players.length - 1 === game.DEAD) {
     resetGame();
-    GAME_TICK = 0;
-    finalTime = 300;
+    game.finalTime = 300;
   }
 }
 
+
 function countdown() {
-  const cd = document.querySelector('.countdown');
-  setTimeout(function() {
-    if (countdownTime > 0) {
-      cd.innerHTML = countdownTime;
-      cd.style.display = 'block';
-      countdownTime--;
-      countdown();
-    } else {
-      cd.style.display = 'none';
-      countdownTime = 5;
-    }
-  }, 1000);
+  const counter = document.querySelector('.countdown');
+  if (game.countdownTime > 0) {
+    counter.innerHTML = game.countdownTime;
+    counter.style.display = 'block';
+    game.countdownTime--;
+    countdown();
+  } else {
+    counter.style.display = 'none';
+    game.countdownTime = 5;
+  }
 }
 
+
 function checkWin() {
-  var mostPoints = 0;
-  for (var player of players) {
-    if (player.points >= POINTS) {
+  for (var player of game.players) {
+    if (player.points >= game.POINTS) {
       updateScoreboard();
       [...document.querySelectorAll('.dot')].map(dot => dot.parentNode.removeChild(dot));
-      win = true;
-      winMessage(players[0]);
+      game.win = true;
+      winMessage(game.players[0]);
     }
   }
 }
@@ -113,40 +91,32 @@ function checkWin() {
 function winMessage(player) {
   let e = document.createElement('div');
   e.className = 'win-message';
-  e.innerHTML = `<span style='color:" + player.color + "'>" + player.id + "</span> vant!`;
+  e.innerHTML = `<span style="color:${player.color}">Player ${player.id + 1}</span> won!`;
   document.body.appendChild(e);
 }
-*/
 
-/******************
-  PREPARING GAME
-*******************/
-function init(e) {
+function setup(e) {
   const num = e.target.getAttribute('data-players');
   createPlayers(num);
   for (let player of game.players) {
     player.registerControls();
   }
-  updateScoreboard();
   document.querySelector('.start-screen').style.display = 'none';
+  updateScoreboard();
   update();
 }
 
-/**************
-  GAME LOOP
-**************/
 function update() {
   if (!game.win) {
     for (let player of game.players) {
       if (!player.dead) {
         player.move();
         player.draw();
-        moveDot(player);
         player.collision();
       }
     }
   }
-  //checkReset();
+  checkReset();
   requestAnimationFrame(update);
 }
 
