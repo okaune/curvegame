@@ -12,8 +12,8 @@ const CONTROLS = [
   }
 ];
 const MODE = {
-  LINE: "line",
-  GAP: "gap"
+  LINE: 'line',
+  GAP: 'gap'
 }
 
 class Player {
@@ -79,7 +79,7 @@ class Player {
 
   drawLine() {
     game.ctx.lineWidth = this.radius;
-    game.ctx.strokeStyle = (this.mode === MODE.LINE) ? this.color : this.color + "00";
+    game.ctx.strokeStyle = (this.mode === MODE.LINE) ? this.color : this.color + '00';
     game.ctx.beginPath();
     game.ctx.moveTo(this.oldX, this.oldY);
     game.ctx.lineTo(this.x, this.y);

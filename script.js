@@ -10,11 +10,11 @@ let game = {
   countdownTime: 5
 }
 
-document.addEventListener("DOMContentLoaded", function(event) {
-  game.canvas = document.getElementById("canvas");
+document.addEventListener('DOMContentLoaded', function(event) {
+  game.canvas = document.getElementById('canvas');
   game.canvas.width = window.innerWidth - 200 - 6;
   game.canvas.height = window.innerHeight - 6;
-  game.ctx = game.canvas.getContext("2d");
+  game.ctx = game.canvas.getContext('2d');
   [...document.querySelectorAll('.start-button')].map(btn => btn.onclick = setup);
 });
 
@@ -32,7 +32,7 @@ function resetGame() {
   checkWin();
   if (!game.win) {
     for (let player of game.players) {
-      var tempColor = player.color;
+      const tempColor = player.color;
       player.color = '#00000000';
       const x = Math.floor(Math.random() * canvas.width);
       const y = Math.floor(Math.random() * canvas.height);
@@ -78,7 +78,7 @@ function countdown() {
 
 
 function checkWin() {
-  for (var player of game.players) {
+  for (let player of game.players) {
     if (player.points >= game.POINTS) {
       updateScoreboard();
       [...document.querySelectorAll('.dot')].map(dot => dot.parentNode.removeChild(dot));
@@ -121,7 +121,7 @@ function update() {
 }
 
 function updatePoints() {
-  for (var player of game.players) {
+  for (let player of game.players) {
     if (!player.dead) {
       player.points++;
     }
