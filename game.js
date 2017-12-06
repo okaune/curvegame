@@ -5,6 +5,7 @@ const STATE = {
   PLAY: "play",
   END_ROUND: "end_round",
   NEXT_ROUND: "next_round",
+  RESET: "reset",
   WIN: "win"
 }
 
@@ -43,16 +44,13 @@ function setup(e) {
 function update() {
   switch(game.STATE) {
     case STATE.PLAY:
-      for (let player of game.players) {
-        if (!player.dead) {
-          player.move();
-          player.collision();
-          player.draw();
-        }
-      }
+      drawPlayers();
       break;
     case STATE.END_ROUND:
       endRound();
+      break;
+    case STATE.NEXT_ROUND:
+      drawPlayers();
       break;
     case STATE.WIN:
       win();
@@ -60,6 +58,16 @@ function update() {
   }
   checkState();
   requestAnimationFrame(update);
+}
+
+function drawPlayers() {
+  for (let player of game.players) {
+    if (!player.dead) {
+      player.move();
+      player.collision();
+      player.draw();
+    }
+  }
 }
 
 function createPlayers(n) {
@@ -97,13 +105,7 @@ function updateScoreboard() {
 
 function checkState() {
   if (game.STATE === STATE.NEXT_ROUND) return;
-  if (game.players.length === game.DEAD) {
-    for (let player of game.players) {
-      if (player.points >= game.POINTS) {
-        game.STATE = STATE.WIN;
-        return;
-      }
-    }
+  if (game.players.length - 1 <= game.DEAD) {
     game.STATE = STATE.END_ROUND;
   }
 }
@@ -113,20 +115,26 @@ function endRound() {
   game.resetTimer = 5;
   const countdown = document.querySelector('.countdown');
   let counter = setInterval(() => {
-    game.resetTimer--;
     if (game.resetTimer <= 0) {
       clearInterval(counter);
       countdown.style.display = 'none';
-      game.resetTimer = 300;
+      for (let player of game.players) {
+        if (player.points >= game.POINTS) {
+          game.STATE = STATE.WIN;
+          return;
+        }
+      }
       nextRound();
       return;
     }
     countdown.innerHTML = game.resetTimer;
     countdown.style.display = 'block';
+    game.resetTimer--;
   }, 1000);
 }
 
 function nextRound() {
+  game.STATE = STATE.RESET;
   game.ctx.clearRect(0, 0, canvas.width, canvas.height);
   for (let player of game.players) {
     const tempColor = player.color;
