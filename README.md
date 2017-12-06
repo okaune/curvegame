@@ -1,6 +1,6 @@
 # CurveGame
 
-Try [CurveGame Aplha 2.0](http://olekristian.com/projects/curvegame/)
+Try [CurveGame Alpha 2.0](http://olekristian.com/projects/curvegame/)
 
 Based on and inspired by [Curve Fever](http://curvefever.io/).
 
